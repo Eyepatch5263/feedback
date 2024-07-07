@@ -43,7 +43,7 @@ const Navbar = () => {
 
                     ) : (
 
-                        <Link className={cn(buttonVariants(),inria.className,"font-bold text-md")} href="/sign-in">
+                        <Link className={cn(buttonVariants(),inria.className,"font-bold text-md w-full md:w-40")} href="/sign-in">
                             Login
                         </Link>
 

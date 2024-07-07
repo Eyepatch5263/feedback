@@ -13,7 +13,7 @@ async function dbConnect():Promise<void> {
     }
 
     try {
-        const db=await mongoose.connect(process.env.MONGO_DB_URI!)
+        const db=await mongoose.connect(process.env.MONGO_DB_URI as string)
         connection.isConnected=db.connections[0].readyState //this actually gives a number which we are storing in the connection object if it gives any else it will be null
         console.log("Db Connected Successfully")
 
