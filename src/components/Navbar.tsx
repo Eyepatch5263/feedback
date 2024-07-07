@@ -25,8 +25,8 @@ const Navbar = () => {
     const user: User = session?.user as User
     return (
         <nav className='p-4 md:p-6 shadow-md'>
-            <div className={'container mx-auto flex flex-col md:flex-row justify-between items-center '}>
-                <div className='justify-start flex flex-row items-center gap-5 my-3'>
+            <div className={'container w-full mx-auto flex flex-col md:flex-row justify-between items-center '}>
+                <div className='justify-start flex flex-row w-full items-center gap-5 my-3'>
                     <Link href={'/dashboard'}>
                     <img src='/logos/logo_short.png' width={100}/>
                     </Link>

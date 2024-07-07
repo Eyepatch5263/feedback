@@ -34,7 +34,7 @@ const Home = () => {
             Explore feedback - where you can anonymously give me a feedback or drop me a message
           </p>
         </section>
-        <Carousel plugins={[Autoplay({ delay: 1500 })]} className="w-full max-w-xs">
+        <Carousel plugins={[Autoplay({ delay: 1500 })]} className="w-full items-center max-w-xs">
           <CarouselContent>
             {
               messages.map((message, i) => (

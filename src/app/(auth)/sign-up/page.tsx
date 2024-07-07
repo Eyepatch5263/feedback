@@ -78,7 +78,7 @@ const Page = () => {
         try {
             const res = await axios.post("/api/signup", data)
             toast.success('Account created Successfully')
-            router.replace(`/verify/${username}`)
+            router.push(`/verify/${username}`)
         } catch (error: any) {
             console.log(error)
             toast.error(error.response.data.message)

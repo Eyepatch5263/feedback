@@ -52,7 +52,7 @@ const MessageCard = ({ message, onMessageDelete }: { message: Message, onMessage
     return (
         <div>
             <Card style={{ height: "200px" }}>
-                <CardHeader>
+                <CardHeader className="flex justify-center">
                     <CardTitle className={"flex flex-row justify-between items-center " + (inria.className)}>Message
                         <AlertDialog>
                             <AlertDialogTrigger asChild>
