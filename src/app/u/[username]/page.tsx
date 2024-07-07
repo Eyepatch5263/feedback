@@ -108,7 +108,7 @@ const Page = () => {
                 <FormItem>
                   <FormLabel className={"text-md " + (inria.className)}>Write your anonymous message here</FormLabel>
                   <FormControl>
-                    <Input className={"w-full text-md " + (inria2.className)} type="text" placeholder="Message" {...field} />
+                    <Input className={"w-full text-md py-10 md:py-3 " + (inria2.className)} type="text" placeholder="Message" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
