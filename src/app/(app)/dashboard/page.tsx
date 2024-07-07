@@ -98,7 +98,7 @@ const Page = () => {
     }
     const username = session?.user.username
     
-    const baseUrl = currentUrl?.split('/')[0]+'://'+currentUrl?.split('/')[2]
+    const baseUrl = currentUrl?.split('/')[0]+'//'+currentUrl?.split('/')[2]
     const profileUrl = `${baseUrl}/u/${username}`
 
     const copyToClipboard = () => {
