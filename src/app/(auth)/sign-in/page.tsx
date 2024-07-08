@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input"
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
+
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import * as z from 'zod'
@@ -33,7 +34,6 @@ const inria = Inria_Sans({
 })
 const Page = () => {
     const [isSubmitting, setIsSubmitting] = useState(false)
-
     const router = useRouter()
     const form = useForm<z.infer<typeof signInSchema>>({ //it's basically giving types to the form that it should be of type signupSchema
         resolver: zodResolver(signInSchema),
@@ -58,6 +58,7 @@ const Page = () => {
         }
         if (res?.url) {
             setIsSubmitting(false)
+            router.refresh()
             toast.success("Logged in successfully")
             router.push('/dashboard')
         }
