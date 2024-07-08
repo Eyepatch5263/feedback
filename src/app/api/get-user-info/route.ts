@@ -6,39 +6,30 @@ import UserModel from "@/model/User";
 export async function GET(request: Request) {
     await dbConnect()
     const session = await getServerSession(authOptions)
-    console.log(session)
     const user = session?.user
+    console.log
     if (!session || !user) {
         return Response.json({
             success: false,
             message: "Invalid session or user"
         }, { status: 401 })
     }
-    const email=session.user.email
+    const email = user.email
     try {
-        const user = await UserModel.aggregate([
-            { $match: {email:email }},
-            { $unwind: "$messages" },
-            { $sort: { "messages.createdAt": -1 } },
-            { $group: { _id: "$_id", messages: { $push: "$messages" } } }
-        ])
-        if (!user || user.length == 0) {
-            return Response.json({
-                success: false,
-                message: "User not found"
-            })
-        }
-        
+        const user = await  UserModel.findOne({ email }).select("isVerified username isAcceptingMessage")
+        if (!user) return Response.json({
+            success: false,
+            message: "User not found"
+        }, { status: 404 })
         return Response.json({
             success: true,
-            messages: user[0].messages
+            message:{user}
         })
     } catch (error) {
-        console.error("Error in getting messages: ", error)
+        console.error(error)
         return Response.json({
             success: false,
-            message: "An error occurred while getting messages"
+            message: "Error occurred while getting user information"
         }, { status: 500 })
     }
-
 }

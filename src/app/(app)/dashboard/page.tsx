@@ -3,7 +3,7 @@ import MessageCard from "@/components/MessageCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
-import { Message } from "@/model/User";
+import UserModel, { Message } from "@/model/User";
 import { acceptMessageSchema } from "@/Schemas/acceptMessageSchema";
 import { ApiResponse } from "@/types/ApiResponse";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,8 +11,6 @@ import axios from "axios";
 import { Loader2, RefreshCcw } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { Inria_Sans, Inria_Serif } from "next/font/google";
-import { usePathname } from "next/navigation";
-import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -31,7 +29,7 @@ const inria = Inria_Sans({
 })
 
 const Page = () => {
-    const { href: currentUrl, pathname } = useUrl() ?? {};
+    const { href: currentUrl } = useUrl() ?? {};
     const [messages, setMessages] = useState<Message[]>([])
     const [isLoading, setIsLoading] = useState(false)
     const [isSwitchLoading, setIsSwitchLoading] = useState(false)
@@ -39,7 +37,7 @@ const Page = () => {
         setMessages(messages.filter((message) => { message._id != messageId }))
         fetchMessages()
     }
-    const { data: session } = useSession()
+    const { status, data: session } = useSession()
     const form = useForm({
         resolver: zodResolver(acceptMessageSchema)
     })
@@ -78,17 +76,27 @@ const Page = () => {
         }
     }, [setIsLoading, setMessages])
 
+    const getUsername = async () => {
+        try {
+            const res = await axios.get('/api/get-user-info')
+            session!.user.username = res.data.message.user.username
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
     useEffect(() => {
         if (!session || !session!.user) return
         fetchMessages()
         fetchAcceptMessage()
+        getUsername()
 
     }, [session, setValue, fetchAcceptMessage, fetchMessages])
 
     const handleSwitchChange = async () => {
         try {
             const res = await axios.post<ApiResponse>('/api/accept-message', { acceptMessages: !acceptMessages })
-            console.log(res)
             setValue("acceptMessages", !acceptMessages)
             toast.success(res.data.message)
         } catch (error: any) {
@@ -97,8 +105,8 @@ const Page = () => {
         }
     }
     const username = session?.user.username
-    
-    const baseUrl = currentUrl?.split('/')[0]+'//'+currentUrl?.split('/')[2]
+
+    const baseUrl = currentUrl?.split('/')[0] + '//' + currentUrl?.split('/')[2]
     const profileUrl = `${baseUrl}/u/${username}`
 
     const copyToClipboard = () => {
@@ -107,25 +115,28 @@ const Page = () => {
     }
 
 
+
+
+
     return (
         <div className="my-8 mx-4 md:mx-8 lg:mx-auto p-6 bg-white rounded-full w-full max-w-6xl">
             <h1 className={"text-4xl font-bold mb-4 capitalize "}>
                 Welcome, {session?.user?.username}
             </h1>
             <div className="mb-4">
-                <h2 className={"text-lg font-semibold mb-2 "+(inria.className)}>
+                <h2 className={"text-lg font-semibold mb-2 " + (inria.className)}>
                     Copy Your Unique Link
                 </h2> {' '}
                 <div className="flex items-center">
-                    <Input  type="text" value={profileUrl} disabled className={"input input-bordered w-full p-2 mr-2 "+(inria2.className)} />
-                    <Button className={"font-bold "+(inria.className)} onClick={copyToClipboard}>
+                    <Input type="text" value={profileUrl} disabled className={"input input-bordered w-full p-2 mr-2 " + (inria2.className)} />
+                    <Button className={"font-bold " + (inria.className)} onClick={copyToClipboard}>
                         Copy
                     </Button>
                 </div>
             </div>
             <div className="mb-4 flex flex-row">
                 <Switch {...register("acceptMessages")} checked={acceptMessages} onCheckedChange={handleSwitchChange} disabled={isSwitchLoading} />
-                <span className={"ml-2 "+(inria2.className)}>
+                <span className={"ml-2 " + (inria2.className)}>
                     Accept Messages: {acceptMessages ? "On" : "Off"}
                 </span>
             </div>

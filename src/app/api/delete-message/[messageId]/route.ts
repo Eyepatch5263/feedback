@@ -5,7 +5,6 @@ import UserModel from "@/model/User";
 
 export async function DELETE(request: Request, { params }: { params: { messageId: string } }) {
     const messageID = params.messageId
-
     await dbConnect()
     const session = await getServerSession(authOptions)
     const user = session?.user
@@ -15,9 +14,10 @@ export async function DELETE(request: Request, { params }: { params: { messageId
             message: "Invalid session or user"
         }, { status: 401 })
     }
+    const email=user.email
     try {
         const res = await UserModel.updateOne({
-            _id: user!._id
+            email:email
         }, { $pull: { messages: { _id: messageID } } })
         if (res.modifiedCount === 0) {
             return Response.json({

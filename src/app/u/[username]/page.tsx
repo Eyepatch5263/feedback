@@ -44,6 +44,7 @@ const Page = () => {
   const [suggesting, setSuggesting] = useState(false)
   const [suggestedMessage, setSuggestedMessage] = useState([])
   const onSubmit = async (data: z.infer<typeof messageSchema>) => {
+    console.log(data)
     try {
       setIsSubmitting(true)
       const res = await axios.post(`/api/send-message`, data)
@@ -66,8 +67,6 @@ const Page = () => {
     }
 
   })
-  const { } = useForm
-
 
   const suggestMessage = async () => {
     try {
@@ -108,7 +107,7 @@ const Page = () => {
                 <FormItem>
                   <FormLabel className={"text-md " + (inria.className)}>Write your anonymous message here</FormLabel>
                   <FormControl>
-                    <Input className={"w-full text-md py-10 md:py-3 " + (inria2.className)} type="text" placeholder="Message" {...field} />
+                    <Input className={"w-full overflow-hidden text-md py-10 md:py-3 " + (inria2.className)} type="text" placeholder="Message" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
