@@ -58,7 +58,6 @@ const Page = () => {
         }
         if (res?.url) {
             setIsSubmitting(false)
-            router.refresh()
             toast.success("Logged in successfully")
             router.push('/dashboard')
         }

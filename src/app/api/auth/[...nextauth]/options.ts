@@ -70,7 +70,7 @@ export const authOptions: NextAuthOptions = {
                 await dbConnect()
 
                 try {
-                    const res = await fetch("http://localhost:3000/api/sign-in-google", {
+                    const res = await fetch(process.env.BASE_URL+ "/api/sign-in-google", {
                         method: "POST",
                         headers: {
                             'Content-Type': 'application/json'
